@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - fap_bdd@localhost" uuid="9283a004-119f-46b2-8192-4c9386db6dfe">
+    <database-info product="MySQL" version="5.6.27-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="fap_bdd"/>
+    <table name="admin" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="adresse" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="utilisateur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="admin_ibfk_1" columns="utilisateur_id" ref-table="utilisateur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_id" unique="false" columns="utilisateur_id"/>
+    </table>
+    <table name="afficheur" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="num_siret_fournisseur" sqlType="VARCHAR" precision="150" scale="0" nullable="false" jdbcType="12"/>
+      <column name="ville" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="code_postal" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="zoneaffichage_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="utilisateur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="fournisseur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="afficheur_ibfk_1" columns="utilisateur_id" ref-table="utilisateur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="afficheur_ibfk_2" columns="fournisseur_id" ref-table="fournisseur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="afficheur_departement_ibfk_1" table="afficheur_departement" schema="" catalog="fap_bdd" columns="afficheur_id"/>
+      <exported-key name="afficheur_zone_affichage_ibfk_1" table="afficheur_zone_affichage" schema="" catalog="fap_bdd" columns="afficheur_id"/>
+      <index name="user_id" unique="false" columns="utilisateur_id"/>
+    </table>
+    <table name="afficheur_departement" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="afficheur_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="departement_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="afficheur_id,departement_id"/>
+      <foreign-key name="afficheur_departement_ibfk_1" columns="afficheur_id" ref-table="afficheur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="afficheur_departement_ibfk_2" columns="departement_id" ref-table="departement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="afficheur_zone_affichage" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="afficheur_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="zoneaffichage_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="afficheur_zone_affichage_ibfk_1" columns="afficheur_id" ref-table="afficheur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="afficheur_zone_affichage_ibfk_2" columns="zoneaffichage_id" ref-table="zone_affichage" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="zone_affichage_id" unique="false" columns="zoneaffichage_id"/>
+    </table>
+    <table name="arrondissement" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="commune_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="arrondissement_ibfk_1" columns="commune_id" ref-table="commune" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="panneau_ibfk_11" table="panneau" schema="" catalog="fap_bdd" columns="arrondissement_id"/>
+      <index name="town_id" unique="false" columns="commune_id"/>
+    </table>
+    <table name="bon_commande" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="reference" sqlType="VARCHAR" precision="80" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="VARCHAR" precision="150" scale="0" nullable="false" jdbcType="12"/>
+      <column name="commentaire" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="fournisseur_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="bon_commande_ibfk_1" columns="fournisseur_id" ref-table="fournisseur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="bon_commande_departement_ibfk_1" table="bon_commande_departement" schema="" catalog="fap_bdd" columns="boncommande_id"/>
+    </table>
+    <table name="bon_commande_departement" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="boncommande_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="departement_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="boncommande_id,departement_id"/>
+      <foreign-key name="bon_commande_departement_ibfk_1" columns="boncommande_id" ref-table="bon_commande" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="bon_commande_departement_ibfk_2" columns="departement_id" ref-table="departement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="campagne" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="titre" sqlType="VARCHAR" precision="150" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_debut" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="date_fin" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="nb_tour" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="statut" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="campagne_client_ibfk_1" table="campagne_client" schema="" catalog="fap_bdd" columns="campagne_id"/>
+      <exported-key name="campagne_departement_ibfk_1" table="campagne_departement" schema="" catalog="fap_bdd" columns="campagne_id"/>
+      <exported-key name="campagne_fournisseur_ibfk_1" table="campagne_fournisseur" schema="" catalog="fap_bdd" columns="campagne_id"/>
+      <exported-key name="campagne_pays_ibfk_1" table="campagne_pays" schema="" catalog="fap_bdd" columns="campagne_id"/>
+      <index name="titre_index" unique="false" columns="titre"/>
+    </table>
+    <table name="campagne_client" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="campagne_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="client_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="statut" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="campagne_id,client_id"/>
+      <foreign-key name="campagne_client_ibfk_1" columns="campagne_id" ref-table="campagne" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="campagne_client_ibfk_2" columns="client_id" ref-table="client" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="campagne_departement" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="campagne_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="departement_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="campagne_id,departement_id"/>
+      <foreign-key name="campagne_departement_ibfk_1" columns="campagne_id" ref-table="campagne" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="campagne_departement_ibfk_2" columns="departement_id" ref-table="departement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="campagne_fournisseur" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="campagne_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="fournisseur_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="campagne_id,fournisseur_id"/>
+      <foreign-key name="campagne_fournisseur_ibfk_1" columns="campagne_id" ref-table="campagne" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="campagne_fournisseur_ibfk_2" columns="fournisseur_id" ref-table="fournisseur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="provider_id" unique="false" columns="fournisseur_id"/>
+    </table>
+    <table name="campagne_pays" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="campagne_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="pays_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="campagne_id,pays_id"/>
+      <foreign-key name="campagne_pays_ibfk_1" columns="campagne_id" ref-table="campagne" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="campagne_pays_ibfk_2" columns="pays_id" ref-table="pays" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="country_id" unique="false" columns="pays_id"/>
+    </table>
+    <table name="canton" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="circonscription_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="canton_ibfk_1" columns="circonscription_id" ref-table="circonscription" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="commune_ibfk_1" table="commune" schema="" catalog="fap_bdd" columns="canton_id"/>
+      <exported-key name="panneau_ibfk_8" table="panneau" schema="" catalog="fap_bdd" columns="canton_id"/>
+      <index name="district_id" unique="false" columns="circonscription_id"/>
+    </table>
+    <table name="circonscription" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom" sqlType="VARCHAR" precision="150" scale="0" nullable="true" jdbcType="12"/>
+      <column name="departement_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="region_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="circonscription_ibfk_1" columns="departement_id" ref-table="departement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="circonscription_ibfk_2" columns="region_id" ref-table="region" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="canton_ibfk_1" table="canton" schema="" catalog="fap_bdd" columns="circonscription_id"/>
+      <exported-key name="panneau_ibfk_7" table="panneau" schema="" catalog="fap_bdd" columns="circonscription_id"/>
+      <index name="department_id" unique="false" columns="departement_id"/>
+    </table>
+    <table name="client" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="adresse_facturation" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="utilisateur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="client_ibfk_1" columns="utilisateur_id" ref-table="utilisateur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="campagne_client_ibfk_2" table="campagne_client" schema="" catalog="fap_bdd" columns="client_id"/>
+      <index name="user_id" unique="false" columns="utilisateur_id"/>
+    </table>
+    <table name="commune" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom" sqlType="VARCHAR" precision="150" scale="0" nullable="true" jdbcType="12"/>
+      <column name="canton_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="commune_ibfk_1" columns="canton_id" ref-table="canton" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="arrondissement_ibfk_1" table="arrondissement" schema="" catalog="fap_bdd" columns="commune_id"/>
+      <exported-key name="panneau_ibfk_9" table="panneau" schema="" catalog="fap_bdd" columns="commune_id"/>
+    </table>
+    <table name="departement" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="code" sqlType="VARCHAR" precision="3" scale="0" nullable="true" jdbcType="12"/>
+      <column name="nom" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="region_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="departement_ibfk_1" columns="region_id" ref-table="region" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="afficheur_departement_ibfk_2" table="afficheur_departement" schema="" catalog="fap_bdd" columns="departement_id"/>
+      <exported-key name="bon_commande_departement_ibfk_2" table="bon_commande_departement" schema="" catalog="fap_bdd" columns="departement_id"/>
+      <exported-key name="campagne_departement_ibfk_2" table="campagne_departement" schema="" catalog="fap_bdd" columns="departement_id"/>
+      <exported-key name="circonscription_ibfk_1" table="circonscription" schema="" catalog="fap_bdd" columns="departement_id"/>
+      <exported-key name="fournisseur_departement_ibfk_2" table="fournisseur_departement" schema="" catalog="fap_bdd" columns="departement_id"/>
+      <exported-key name="panneau_ibfk_10" table="panneau" schema="" catalog="fap_bdd" columns="departement_id"/>
+      <exported-key name="ville_ibfk_3" table="ville" schema="" catalog="fap_bdd" columns="departement_id"/>
+      <index name="department_code" unique="false" columns="code"/>
+    </table>
+    <table name="etat_panneau" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="panneau_ibfk_2" table="panneau" schema="" catalog="fap_bdd" columns="etatpanneau_id"/>
+    </table>
+    <table name="format_panneau" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="type_format" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="panneau_ibfk_12" table="panneau" schema="" catalog="fap_bdd" columns="formatpanneau_id"/>
+    </table>
+    <table name="fournisseur" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="raison_sociale" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="siret" sqlType="VARCHAR" precision="150" scale="0" nullable="false" jdbcType="12"/>
+      <column name="iban" sqlType="VARCHAR" precision="150" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ville" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="adresse_livraison" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="codepostal_livraison" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="utilisateur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="fournisseur_ibfk_1" columns="utilisateur_id" ref-table="utilisateur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="afficheur_ibfk_2" table="afficheur" schema="" catalog="fap_bdd" columns="fournisseur_id"/>
+      <exported-key name="bon_commande_ibfk_1" table="bon_commande" schema="" catalog="fap_bdd" columns="fournisseur_id"/>
+      <exported-key name="campagne_fournisseur_ibfk_2" table="campagne_fournisseur" schema="" catalog="fap_bdd" columns="fournisseur_id"/>
+      <exported-key name="fournisseur_adresse_livraison_ibfk_1" table="fournisseur_adresse_livraison" schema="" catalog="fap_bdd" columns="supplier_id"/>
+      <exported-key name="fournisseur_departement_ibfk_1" table="fournisseur_departement" schema="" catalog="fap_bdd" columns="fournisseur_id"/>
+      <index name="user_id" unique="false" columns="utilisateur_id"/>
+    </table>
+    <table name="fournisseur_adresse_livraison" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="supplier_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="adresse_livraison" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="supplier_id"/>
+      <foreign-key name="fournisseur_adresse_livraison_ibfk_1" columns="supplier_id" ref-table="fournisseur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="fournisseur_departement" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="fournisseur_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="departement_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="fournisseur_id,departement_id"/>
+      <foreign-key name="fournisseur_departement_ibfk_1" columns="fournisseur_id" ref-table="fournisseur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fournisseur_departement_ibfk_2" columns="departement_id" ref-table="departement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="panneau" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="latitude" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="longitude" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="prix" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
+      <column name="adresse_emplacement" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="commentaire" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="num_emplacement" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="num_panneau" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="code_postal" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="region_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="departement_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="circonscription_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="canton_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="commune_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="arrondissement_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="zoneaffichage_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="formatpanneau_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="etatpanneau_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="raisonsignalement_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="utilisateur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="panneau_ibfk_1" columns="zoneaffichage_id" ref-table="zone_affichage" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_10" columns="departement_id" ref-table="departement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_11" columns="arrondissement_id" ref-table="arrondissement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_12" columns="formatpanneau_id" ref-table="format_panneau" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_2" columns="etatpanneau_id" ref-table="etat_panneau" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_3" columns="utilisateur_id" ref-table="utilisateur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_4" columns="raisonsignalement_id" ref-table="raison_signalement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_5" columns="region_id" ref-table="region" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_7" columns="circonscription_id" ref-table="circonscription" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_8" columns="canton_id" ref-table="canton" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="panneau_ibfk_9" columns="commune_id" ref-table="commune" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="photo_panneau_ibfk_1" table="photo_panneau" schema="" catalog="fap_bdd" columns="panneau_id"/>
+      <index name="department_id" unique="false" columns="departement_id"/>
+      <index name="district_id" unique="false" columns="circonscription_id"/>
+      <index name="num_panneau_index" unique="false" columns="num_panneau"/>
+      <index name="town_id" unique="false" columns="commune_id"/>
+      <index name="user_id" unique="false" columns="utilisateur_id"/>
+      <index name="zone_affichage_id" unique="false" columns="zoneaffichage_id"/>
+    </table>
+    <table name="pays" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="code" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="nom" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="campagne_pays_ibfk_2" table="campagne_pays" schema="" catalog="fap_bdd" columns="pays_id"/>
+      <index name="code_unique" unique="true" columns="code"/>
+      <index name="unique_id" unique="true" columns="id"/>
+    </table>
+    <table name="photo_panneau" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="url" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nom_photo" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_prise" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="panneau_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="photo_panneau_ibfk_1" columns="panneau_id" ref-table="panneau" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="raison_signalement" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="panneau_ibfk_4" table="panneau" schema="" catalog="fap_bdd" columns="raisonsignalement_id"/>
+    </table>
+    <table name="region" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom" sqlType="VARCHAR" precision="150" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="circonscription_ibfk_2" table="circonscription" schema="" catalog="fap_bdd" columns="region_id"/>
+      <exported-key name="departement_ibfk_1" table="departement" schema="" catalog="fap_bdd" columns="region_id"/>
+      <exported-key name="panneau_ibfk_5" table="panneau" schema="" catalog="fap_bdd" columns="region_id"/>
+    </table>
+    <table name="role_utilisateur" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="role" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="niveau" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="utilisateur_ibfk_1" table="utilisateur" schema="" catalog="fap_bdd" columns="role_utilisateur_id"/>
+    </table>
+    <table name="superadmin" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="adresse" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="utilisateur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="superadmin_ibfk_1" columns="utilisateur_id" ref-table="utilisateur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_id" unique="false" columns="utilisateur_id"/>
+    </table>
+    <table name="utilisateur" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="prenom" sqlType="VARCHAR" precision="150" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="telephone" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="url_photo" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="api_key" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password_hash" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="statut" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MQ=="/>
+      <column name="date_creation" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="role_utilisateur_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="utilisateur_ibfk_1" columns="role_utilisateur_id" ref-table="role_utilisateur" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="admin_ibfk_1" table="admin" schema="" catalog="fap_bdd" columns="utilisateur_id"/>
+      <exported-key name="afficheur_ibfk_1" table="afficheur" schema="" catalog="fap_bdd" columns="utilisateur_id"/>
+      <exported-key name="client_ibfk_1" table="client" schema="" catalog="fap_bdd" columns="utilisateur_id"/>
+      <exported-key name="fournisseur_ibfk_1" table="fournisseur" schema="" catalog="fap_bdd" columns="utilisateur_id"/>
+      <exported-key name="panneau_ibfk_3" table="panneau" schema="" catalog="fap_bdd" columns="utilisateur_id"/>
+      <exported-key name="superadmin_ibfk_1" table="superadmin" schema="" catalog="fap_bdd" columns="utilisateur_id"/>
+      <index name="email_index" unique="false" columns="email"/>
+      <index name="password_hash_index" unique="false" columns="password_hash"/>
+    </table>
+    <table name="ville" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom" sqlType="VARCHAR" precision="150" scale="0" nullable="true" jdbcType="12"/>
+      <column name="departement_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="ville_ibfk_3" columns="departement_id" ref-table="departement" ref-schema="" ref-catalog="fap_bdd" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="department_id" unique="false" columns="departement_id"/>
+    </table>
+    <table name="zone_affichage" schema="" catalog="fap_bdd" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nom_zone" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="description" sqlType="VARCHAR" precision="150" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="afficheur_zone_affichage_ibfk_2" table="afficheur_zone_affichage" schema="" catalog="fap_bdd" columns="zoneaffichage_id"/>
+      <exported-key name="panneau_ibfk_1" table="panneau" schema="" catalog="fap_bdd" columns="zoneaffichage_id"/>
+    </table>
+  </data-source>
+</component>
