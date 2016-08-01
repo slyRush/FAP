@@ -18,31 +18,20 @@ $db = new DBManager();
 $logManager = new Log();
 
 /**
- * Get all campagnes
+ * Get all campagne
  * url - /campagnes
  * method - GET
  */
 $app->get('/campagnes', 'authenticate', function() use ($app, $db, $logManager) {
-    global $user_id, $user_connected;
-
-    $campagnes = $db->entityManager->campagne("author_id", $user_id);
+    $campagnes = $db->entityManager->campagne();
     $campagnes_array = JSON::parseNotormObjectToArray($campagnes);
+    global $user_connected;
 
     if(count($campagnes_array) > 0)
     {
         $data_campagnes = array();
-        foreach ($campagnes as $campagne)
-        {
-            $data_pays = array();
-            foreach ($campagne->campagne_pays() as $campagne_pays)
-            {
-                array_push($data_pays, array("id" => $campagne_pays->pays["id"], "name" => $campagne_pays->pays["name"]));
-            }
-            $campagne = JSON::parseNotormObjectToArray($campagne); //parse campagne to array
-            $campagne["payss"] = $data_pays; //add payss from array
+        foreach ($campagnes as $campagne) array_push($data_campagnes, $campagne);
 
-            array_push($data_campagnes, $campagne);
-        }
         $logManager->setLog($user_connected, (string)$campagnes, false);
         echoResponse(200, true, "Tous les campagnes retournés", $data_campagnes);
     }
@@ -51,7 +40,6 @@ $app->get('/campagnes', 'authenticate', function() use ($app, $db, $logManager) 
         $logManager->setLog($user_connected, (string)$campagnes, true);
         echoResponse(400, false, "Une erreur est survenue.", NULL);
     }
-
 });
 
 /**
@@ -60,48 +48,51 @@ $app->get('/campagnes', 'authenticate', function() use ($app, $db, $logManager) 
 * method - GET
 */
 $app->get('/campagnes/:id', 'authenticate', function($id) use ($app, $db, $logManager) {
-    global $user_connected;
     $campagne = $db->entityManager->campagne[$id];
+    global $user_connected;
 
     if(count($campagne) > 0)
     {
         $logManager->setLog($user_connected, (string)$campagne, false);
-        echoResponse(200, true, "campagne est retourné", $campagne);
+        echoResponse(200, true, "campagne retourné(e)", $campagne);
     }
     else
     {
-        $logManager->setLog($user_connected, (string)$campagne, false);
-        echoResponse(400, true, "Une erreur est survenue.", NULL);
+        $logManager->setLog($user_connected, (string)$campagne, true);
+        echoResponse(400, false, "Une erreur est survenue.", NULL);
     }
 });
 
 /**
 * Create new campagne
-* url - /campagnes
+* url - /campagnes/
 * method - POST
-* @params title, web, slogan
+* @params name
 */
 $app->post('/campagnes', 'authenticate', function() use ($app, $db, $logManager) {
-    verifyRequiredParams(array('titre','date_debut','date_fin','nb_tour','statut')); // vérifier les paramétres requises
-    global $user_id, $user_connected;
+    verifyRequiredParams(array('titre','date_debut','date_fin','nb_tour')); // vérifier les paramédtres requises
+    global $user_connected;
 
     //recupérer les valeurs POST
     $request_params = json_decode($app->request()->getBody(), true);
-    $request_params = insertKeyValuePairInArray($request_params, "author_id", $user_id, 0); //add key author_id to array params send to post, value equals to current $user_id
-    $request_params = insertKeyValuePairInArray($request_params, "maintainer_id", $user_id, 1); //add key maintainer_id to array params send to post, value equals to current $user_id
+    $name_campagne = $request_params["name"];
 
-    $insert_campagne = $db->entityManager->campagne()->insert($request_params);
+    $data = array(
+        "name" => $name_campagne
+    );
+
+    $insert_campagne = $db->entityManager->campagne()->insert($data);
 
     if($insert_campagne == FALSE)
     {
-        $logManager->setLog($user_connected, buildSqlQueryInsert("campagne", $request_params), true);
+        $logManager->setLog($user_connected, buildSqlQueryInsert("campagne", $data), true);
         echoResponse(400, false, "Oops! Une erreur est survenue lors de l'insertion du campagne", NULL);
     }
     else
     if($insert_campagne != FALSE || is_array($insert_campagne))
     {
-        $logManager->setLog($user_connected, buildSqlQueryInsert("campagne", $request_params), false);
-        echoResponse(201, true, "campagne ajoutée avec succès", $insert_campagne);
+        $logManager->setLog($user_connected, buildSqlQueryInsert("campagne", $data), false);
+        echoResponse(201, true, "campagne ajouté(e) avec succès", $insert_campagne);
     }
 });
 
@@ -109,16 +100,15 @@ $app->post('/campagnes', 'authenticate', function() use ($app, $db, $logManager)
 * Update one campagne
 * url - /campagnes/:id
 * method - PUT
-* @params title, web, slogan
+* @params name
 */
 $app->put('/campagnes/:id', 'authenticate', function($id) use ($app, $db, $logManager) {
-    verifyRequiredParams(array('titre','date_debut','date_fin','nb_tour','statut')); // vérifier les paramétres requises
-    global $user_id, $user_connected;
+    verifyRequiredParams(array('titre','date_debut','date_fin','nb_tour')); // vérifier les paramètres requises
+    global $user_connected;
 
     //recupérer les valeurs POST
     $request_params = json_decode($app->request()->getBody(), true);
-    $request_params = insertKeyValuePairInArray($request_params, "author_id", $user_id, 0); //add key author_id to array params send to post, value equals to current $user_id
-    $request_params = insertKeyValuePairInArray($request_params, "maintainer_id", $user_id, 1); //add key maintainer_id to array params send to post, value equals to current $user_id
+    $name_campagne = $request_params["name"];
 
     $campagne = $db->entityManager->campagne[$id];
     if($campagne)
@@ -132,7 +122,7 @@ $app->put('/campagnes/:id', 'authenticate', function($id) use ($app, $db, $logMa
         }
         else
         {
-            $update_campagne = $campagne->update($request_params);
+            $update_campagne = $campagne->update(array("name" => $name_campagne));
 
             if($update_campagne == FALSE)
             {
@@ -143,61 +133,44 @@ $app->put('/campagnes/:id', 'authenticate', function($id) use ($app, $db, $logMa
             if($update_campagne != FALSE || is_array($update_campagne))
             {
                 $logManager->setLog($user_connected, (string)$campagne, false);
-                echoResponse(200, true, "campagne mis à jour avec succès. Id : $id", NULL);
+                echoResponse(201, true, "campagne mis à jour avec succès", NULL);
             }
         }
     }
     else
     {
         $logManager->setLog($user_connected, (string)$campagne, true);
-        echoResponse(400, false, "Tag inexistant !!", NULL);
+        echoResponse(400, false, "campagne inexistant !!", NULL);
     }
+
 });
 
 /**
-* Delete an campagne, need to delete from association table first
+* Delete one campagne
 * url - /campagnes/:id
 * method - DELETE
 * @params name
 */
 $app->delete('/campagnes/:id', 'authenticate', function($id) use ($app, $db, $logManager) {
-    global $user_connected;
     $campagne = $db->entityManager->campagne[$id];
+    global $user_connected;
 
-    $campagne_pays = $db->entityManager->campagne_pays("campagne_id", $id)->fetch();
-
-    if($campagne_pays != FALSE)
-    {
-        if($db->entityManager->campagne_pays("campagne_id", $id)->delete())
-        {
-            if($campagne && $campagne->delete())
-            {
-                $logManager->setLog($user_connected, (string)$campagne, false);
-                echoResponse(200, true, "campagne id : $id supprimée avec succès", NULL);
-            }
-            else
-            {
-                $logManager->setLog($user_connected, (string)$campagne, true);
-                echoResponse(200, false, "campagne id : $id n'a pa pu être supprimée", NULL);
-            }
-        }
-        else
-        {
-            $logManager->setLog($user_connected, (string)$campagne, true);
-            echoResponse(400, false, "Erreur lors de la suppression de la campagne ayant l'id $id !!", NULL);
-        }
-    }
-    else if($campagne_pays == FALSE)
+    if($db->entityManager->application_campagne("campagne_id", $id)->delete())
     {
         if($campagne && $campagne->delete())
         {
             $logManager->setLog($user_connected, (string)$campagne, false);
-            echoResponse(200, true, "campagne id : $id supprimée avec succès", NULL);
+            echoResponse(200, true, "campagne id : $id supprimé avec succès", NULL);
         }
         else
         {
             $logManager->setLog($user_connected, (string)$campagne, true);
-            echoResponse(200, false, "campagne id : $id n'a pa pu être supprimée", NULL);
+            echoResponse(200, false, "campagne id : $id pas supprimé. Erreur !!", NULL);
         }
+    }
+    else
+    {
+        $logManager->setLog($user_connected, (string)$campagne, true);
+        echoResponse(400, false, "Erreur lors de la suppression de la campagne ayant l'id $id : campagne inexistant !!", NULL);
     }
 });

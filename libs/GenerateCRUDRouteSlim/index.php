@@ -169,11 +169,11 @@ function buildTableNameWithAssociation()
     $sql = 'SHOW TABLES';
     $allTableName = QueryExecutor::execute(new SqlQuery($sql));
 
-    foreach ($allTableName as $tableName)
-    {
-        if($tableName == "fournisseur_adresse_livraison" || $tableName == "bon_commande" || $tableName == "etat_panneau" || $tableName == "format_panneau" || $tableName == "photo_panneau" || $tableName == "raison_signalement" || $tableName == "role_utilisateur" || $tableName == "zone_affichage") continue;
+    //foreach ($allTableName as $tableName)
+    //{
+        //if($tableName == "raison_signalement" || $tableName == "type_commande" || $tableName == "etat_panneau" || $tableName == "format_panneau" || $tableName == "photo_panneau" || $tableName == "type_adresse") continue;
 
-        if(strpos($tableName[0], "_") !== FALSE)
+        /*if(strpos($tableName[0], "_") !== FALSE)
         {
             $tableNameExplode = explode("_", $tableName[0]);
 
@@ -200,8 +200,12 @@ function buildTableNameWithAssociation()
                 );
                 $result[] = $tableNameAssociation;
             }
-        }
-    }
+        }*/
+    //}
+    $result = array(
+        "assoc_ppr_assoc_ucfb" => "assoc_ucfb",
+        "assoc_sd_assoc_ucfb" => "assoc_ucfb"
+    );
 
     return $result;
 }
